@@ -25,6 +25,13 @@ Ferramenta de linha de comando que automatize a geração de arquivos de configu
 
 - **Testes:** pytest (para testes unitários).
 
+** Links importantes**
+
+- [Python](https://www.python.org/)
+- [Click](https://click.palletsprojects.com/en/stable/)
+- [PyYAML](https://pyyaml.org/wiki/PyYAMLDocumentation)
+- [Pytest](https://docs.pytest.org/en/stable/)
+
 ## 3. Linguagens e Frameworks Suportados
 
 - **Backend:**
@@ -92,7 +99,6 @@ A interface do plugin definirá as seguintes funções:
 - `generate_workflow(language, test, linter)`: Gera o conteúdo do arquivo `.github/workflows/main.yml`. Recebe a linguagem, o framework de teste e o linter como entrada e retorna uma string com o conteúdo YAML.
 
 **Todos os plugins devem implementar esta interface!**
-
 
 ## 6. Estrutura do Projeto
 
