@@ -1,5 +1,5 @@
 import os
-from core import CIPluginInterface
+from src.plugins import CIPluginInterface
 from typing import Optional
 
 class JavaPlugin(CIPluginInterface):
