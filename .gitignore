@@ -1,0 +1,70 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+environment/
+site-packages/
+
+# Virtualenv
+.python-version
+
+# Distribution / packaging
+.eggs/
+dist/
+build/
+wheels/
+*.egg-info/
+.installed.cfg
+*.whl
+MANIFEST.in
+
+# PyInstaller
+#  Usually these files are written into a dist/ folder.
+#  See https://github.com/pyinstaller/pyinstaller/blob/development/docs/spec-files.rst
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Sphinx documentation
+docs/_build/
+
+# Build files
+*.swp
+*~
+tmp/
+*.tmp
+.DS_Store
+
+# Poetry
+poetry.lock
+
+# Other
+*.vscode/
