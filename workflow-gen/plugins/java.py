@@ -16,7 +16,6 @@ class JavaPlugin(CIPluginInterface):
         """
         Detects the testing framework and linter used in the project.
         """
-        # For simplicity, we'll assume JUnit and Checkstyle
         dependencies = {"test": "junit", "linter": "checkstyle"}
         return dependencies
 

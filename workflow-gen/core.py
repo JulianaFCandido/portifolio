@@ -1,9 +1,8 @@
+from typing import Optional, Dict
 import click
-import os
 import importlib
-from typing import Optional, Dict, Any
-import yaml
 import inspect
+import os
 
 class CIPluginInterface:
     def detect_language(self, project_path: str) -> Optional[str]:
@@ -12,7 +11,7 @@ class CIPluginInterface:
         """
         raise NotImplementedError
 
-    def get_dependencies(self, project_path: str) -> dict[str, str]:
+    def get_dependencies(self, project_path: str) -> Dict[str, str]:
         """
         Detects the testing framework and linter used in the project.
         """
@@ -25,11 +24,11 @@ class CIPluginInterface:
         raise NotImplementedError
 
 
-def load_plugins(plugin_dir="plugins") -> dict[str, CIPluginInterface]:
+def load_plugins(plugin_dir="plugins") -> Dict[str, CIPluginInterface]:
     """
     Loads plugins from the specified directory.
     """
-    plugins: dict[str, CIPluginInterface] = {}
+    plugins: Dict[str, CIPluginInterface] = {}
     for filename in os.listdir(plugin_dir):
         if filename.endswith(".py") and filename != "__init__.py":
             module_name = filename[:-3]
@@ -55,7 +54,7 @@ def detect_language_from_project(project_path: str, plugins: dict) -> Optional[s
             if language:
                 return language
         except Exception as e:
-            print(f"Erro ao executar o plugin {plugin_name}: {e}")
+            print(f"Error to execute plugin {plugin_name}: {e}")
             return None
     return None
 
@@ -105,7 +104,7 @@ def cli(project: str, language: str, frontend: str, test: str, linter: str, outp
         workflow_content = instance.generate_workflow(language, test, linter)
         output_dir = output or os.path.join(project or ".", ".github", "workflows")
     except Exception as e:
-        print(f"Erro ao executar o plugin: {e}")
+        print(f"Error to execute plugin: {e}")
         return
 
     os.makedirs(output_dir, exist_ok=True)
