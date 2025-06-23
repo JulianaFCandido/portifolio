@@ -46,6 +46,40 @@ Ferramenta de linha de comando que automatize a geração de arquivos de configu
 
 ## 4. Interface de Linha de Comando (CLI)
 
+### 4.1 Instalação
+
+Verifique se a versão de Python instalada é 3.7+:
+
+  ```
+  python3 --version
+  ```
+
+Clone o repositório:
+
+  ```
+   git clone <URL_DO_REPOSITORIO>
+  ```
+
+Navegue para o diretório do projeto:
+
+  ```
+  cd <NOME_DO_REPOSITORIO>
+  ```
+
+Instale as dependências:
+
+  ```
+  pip install -e .
+  ```
+
+Teste a instalação:
+
+  ```
+  workflow-gen --help
+  ```
+
+### 4.2 Especificação do comando
+
 - **Nome do Comando:** workflow-gen (abreviação de "Workflow Generator")
 
 - **Opções:**
@@ -85,7 +119,9 @@ Ferramenta de linha de comando que automatize a geração de arquivos de configu
 - **Saída Esperada:**
 
   - Um arquivo `.github/workflows/main.yml` no diretório `.github/workflows` do projeto (ou no diretório especificado por `--output`).
+
   - Uma mensagem de sucesso indicando que o arquivo foi gerado.
+
   - Mensagens de erro se ocorrerem erros durante o processo (por exemplo, caminho de projeto inválido, linguagem não suportada).
 
 ## 5. Interface do Plugin
@@ -104,25 +140,26 @@ A interface do plugin definirá as seguintes funções:
 
 ```
 workflow-gen/
-├── core.py         # Script principal com a CLI e a lógica de carregamento de plugins
-├── plugins/        # Diretório contendo os plugins de linguagem
-│   ├── __init__.py
-│   ├── python.py   # Plugin para Python
-│   ├── nodejs.py   # Plugin para Node.js
-│   ├── java.py     # Plugin para Java
-│   └── ...         # Outros plugins de linguagem
-├── templates/      # Diretório contendo os templates YAML
-│   ├── python/
-│   │   ├── pytest/
-│   │   │   └── flake8.yml  # Template para Python com pytest e flake8
-│   │   └── ...
-│   ├── nodejs/
-│   └── ...
-├── tests/          # Diretório contendo os testes unitários
-│   ├── test_core.py  # Testes unitários para a lógica principal
-│   ├── ...
-├── README.md       # README do projeto
-└── LICENSE         # Licença do projeto
+├── src/              # Pacote Python
+│   ├── __init__.py   # Inicialização do pacote e entrypoint da aplicação
+│   ├── core.py       # Lógica principal da CLI
+│   ├── plugins/      # Plugins para diferentes linguagens
+│   │   ├── __init__.py  # Inicialização do pacote plugins
+│   │   ├── java.py      # Plugin para Java
+│   │   ├── nodejs.py    # Plugin para Node.js
+│   │   └── python.py    # Plugin para Python
+│   ├── exceptions/  # Exceções personalizadas
+│   │── utils/      # Funções utilitárias
+|   │── templates/  # Templates para os workflows
+│       ├── java/
+│       ├── nodejs/
+│       └── python/
+├── tests/              # Testes unitários
+├── .gitignore          # Arquivos ignorados pelo Git
+├── README.md           # Instruções e documentação do projeto
+├── requirements.txt    # Dependências do projeto
+├── install.sh        # Executável de instalação do comando
+└── workflow-gen      # Script executável principal (gerado automaticamente pelo install.sh)
 ```
 
 ## 7. Estratégia de Testes
