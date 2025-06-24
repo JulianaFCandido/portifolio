@@ -25,7 +25,7 @@ Ferramenta de linha de comando que automatize a geração de arquivos de configu
 
 - **Testes:** pytest (para testes unitários).
 
-** Links importantes**
+**Links importantes**
 
 - [Python](https://www.python.org/)
 - [Click](https://click.palletsprojects.com/en/stable/)

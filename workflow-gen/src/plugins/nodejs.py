@@ -3,6 +3,9 @@ from src.plugins import CIPluginInterface
 from typing import Optional
 import json
 
+from src.utils import i18n
+
+
 class NodejsPlugin(CIPluginInterface):
     def detect_language(self, project_path: str) -> Optional[str]:
         """
@@ -23,10 +26,12 @@ class NodejsPlugin(CIPluginInterface):
                 try:
                     package_json = json.load(f)
                     dev_dependencies = package_json.get("devDependencies", {})
-                    dependencies["test"] = "jest" if "jest" in dev_dependencies else "mocha" if "mocha" in dev_dependencies else None
+                    dependencies["test"] = (
+                        "jest" if "jest" in dev_dependencies else "mocha" if "mocha" in dev_dependencies else None
+                    )
                     dependencies["linter"] = "eslint" if "eslint" in dev_dependencies else None
                 except json.JSONDecodeError:
-                    print("Error decoding package.json")
+                    print(i18n.get_message("errors", "package_json_decode"))
         return dependencies
 
     def generate_workflow(self, language: str, test: str, linter: str) -> str:

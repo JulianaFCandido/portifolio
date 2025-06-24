@@ -5,10 +5,13 @@ import click
 
 from src.plugins import CIPluginInterface, PluginLoader
 from src.exceptions import LanguageDetectionError
+from src.utils import i18n
 
 
 def detect_language_from_project(project_path: str, plugins: Dict[str, CIPluginInterface]) -> Optional[str]:
-    """Detects the language from an existing project."""
+    """
+    Detects the language from an existing project.
+    """
     for plugin_name, plugin in plugins.items():
         try:
             instance = plugin()
@@ -16,28 +19,52 @@ def detect_language_from_project(project_path: str, plugins: Dict[str, CIPluginI
             if language:
                 return language
         except Exception as e:
-            print(f"Error executing plugin {plugin_name}: {e}")
+            print(i18n.get_message("errors", "plugin_error", plugin_name=plugin_name, error=e))
             return None
     return None
 
 
-# CLI
 @click.command()
-@click.option('--project', '-p', type=click.Path(exists=True, file_okay=False, dir_okay=True),
-              help='Path to the project directory (for existing projects).')
-@click.option('--language', '-l', type=click.Choice(['nodejs', 'python', 'java']),
-              help='Programming language of the project (for new projects).')
-@click.option('--frontend', '-f', type=click.Choice(['react', 'angular', 'vue']),
-              help='Frontend framework of the project (for new projects).')
-@click.option('--test', '-t', type=click.Choice(['jest', 'mocha', 'pytest', 'unittest', 'junit', 'karma', 'jasmine']),
-              help='Testing framework of the project (for new projects).')
-@click.option('--linter', '-i', type=click.Choice(['eslint', 'flake8', 'pylint', 'checkstyle']),
-              help='Linter of the project (for new projects).')
-@click.option('--output', '-o', type=click.Path(file_okay=False, dir_okay=True),
-              help='Specify a different directory for storing the .github/workflows/main.yml.')
+@click.option(
+    "--project",
+    "-p",
+    type=click.Path(exists=True, file_okay=False, dir_okay=True),
+    help=i18n.get_message("help", "project"),
+)
+@click.option(
+    "--language",
+    "-l",
+    type=click.Choice(["nodejs", "python", "java"]),
+    help=i18n.get_message("help", "language"),
+)
+@click.option(
+    "--frontend",
+    "-f",
+    type=click.Choice(["react", "angular", "vue"]),
+    help=i18n.get_message("help", "frontend"),
+)
+@click.option(
+    "--test",
+    "-t",
+    type=click.Choice(["jest", "mocha", "pytest", "unittest", "junit", "karma", "jasmine"]),
+    help=i18n.get_message("help", "test"),
+)
+@click.option(
+    "--linter",
+    "-i",
+    type=click.Choice(["eslint", "flake8", "pylint", "checkstyle"]),
+    help=i18n.get_message("help", "linter"),
+)
+@click.option(
+    "--output",
+    "-o",
+    type=click.Path(file_okay=False, dir_okay=True),
+    help=i18n.get_message("help", "output"),
+)
 def cli(project: str, language: str, frontend: str, test: str, linter: str, output: str):
-    """WorkflowGen for GitHub Actions"""
-
+    """
+    WorkflowGen for GitHub Actions
+    """
     plugin_loader = PluginLoader()
     plugins = plugin_loader.load_plugins()
 
@@ -45,14 +72,14 @@ def cli(project: str, language: str, frontend: str, test: str, linter: str, outp
         if project:
             language = detect_language_from_project(project, plugins)
             if not language:
-                raise LanguageDetectionError("Could not detect language from project. Please specify using --language.")
+                raise LanguageDetectionError(i18n.get_message("errors", "language_detection_error"))
 
         if not language:
-            raise click.UsageError("Please specify the language using --language or provide the project path using --project.")
+            raise click.UsageError(i18n.get_message("errors", "usage_error"))
 
         plugin = plugins.get(language)
         if not plugin:
-            raise click.ClickException(f"Language {language} not supported.")
+            raise click.ClickException(i18n.get_message("errors", "language_not_supported", language=language))
 
         instance = plugin()
 
@@ -70,7 +97,7 @@ def cli(project: str, language: str, frontend: str, test: str, linter: str, outp
         with open(output_file, "w") as f:
             f.write(workflow_content)
 
-        click.echo(f"Generated workflow file: {output_file}")
+        click.echo(i18n.get_message("messages", "workflow_generated", output_file=output_file))
 
     except LanguageDetectionError as e:
         click.echo(str(e), err=True)

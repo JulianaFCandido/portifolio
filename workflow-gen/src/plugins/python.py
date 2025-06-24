@@ -2,6 +2,7 @@ import os
 from src.plugins import CIPluginInterface
 from typing import Optional
 
+
 class PythonPlugin(CIPluginInterface):
     def detect_language(self, project_path: str) -> Optional[str]:
         """
@@ -33,7 +34,6 @@ class PythonPlugin(CIPluginInterface):
         """
         Generates the content of the .github/workflows/main.yml file for Python.
         """
-        # Basic workflow content (you can customize this later)
         workflow_content = f"""
 name: CI
 

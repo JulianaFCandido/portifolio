@@ -2,13 +2,15 @@ import os
 from src.plugins import CIPluginInterface
 from typing import Optional
 
+
 class JavaPlugin(CIPluginInterface):
     def detect_language(self, project_path: str) -> Optional[str]:
         """
         Detects if the project is a Java project.
         """
-        if os.path.exists(os.path.join(project_path, "pom.xml")) or \
-           os.path.exists(os.path.join(project_path, "build.gradle")):
+        if os.path.exists(os.path.join(project_path, "pom.xml")) or os.path.exists(
+            os.path.join(project_path, "build.gradle")
+        ):
             return "java"
         return None
 

@@ -1,0 +1,17 @@
+errors:
+  plugin_error: "Error loading plugin {plugin_name}: {error}"
+  language_detection_error: "Could not detect language from project. Please specify using --language."
+  language_not_supported: "Language {language} not supported."
+  usage_error: "Please specify the language using --language or provide the project path using --project."
+  package_json_decode: "Error decoding package.json"
+
+messages:
+  workflow_generated: "Generated workflow file: {output_file}"
+
+help:
+  project: "Path to the project directory (for existing projects)."
+  language: "Programming language of the project (for new projects)."
+  frontend: "Frontend framework of the project (for new projects)."
+  test: "Testing framework of the project (for new projects)."
+  linter: "Linter of the project (for new projects)."
+  output: "Specify the directory where the workflow file will be saved."

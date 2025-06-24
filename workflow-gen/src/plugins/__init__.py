@@ -1,8 +1,10 @@
 import inspect
 import importlib
-import os
 from pathlib import Path
 from typing import Optional, Dict
+
+from src.utils import i18n
+
 
 class CIPluginInterface:
     """
@@ -10,15 +12,21 @@ class CIPluginInterface:
     """
 
     def detect_language(self, project_path: str) -> Optional[str]:
-        """Detects the programming language of the project."""
+        """
+        Detects the programming language of the project.
+        """
         raise NotImplementedError
 
     def get_dependencies(self, project_path: str) -> Dict[str, str]:
-        """Detects the testing framework and linter used in the project."""
+        """
+        Detects the testing framework and linter used in the project.
+        """
         raise NotImplementedError
 
     def generate_workflow(self, language: str, test: str, linter: str) -> str:
-        """Generates the content of the .github/workflows/main.yml file."""
+        """
+        Generates the content of the .github/workflows/main.yml file.
+        """
         raise NotImplementedError
 
 
@@ -31,7 +39,9 @@ class PluginLoader:
         self.plugin_dir = plugin_dir
 
     def load_plugins(self) -> Dict[str, CIPluginInterface]:
-        """Loads plugins from the specified directory."""
+        """
+        Loads plugins from the specified directory.
+        """
         plugins: Dict[str, CIPluginInterface] = {}
         plugin_path = Path(self.plugin_dir)
         for filepath in plugin_path.glob("*.py"):
@@ -47,5 +57,5 @@ class PluginLoader:
                         plugin_class = getattr(module, name)
                         plugins[module_name] = plugin_class
             except Exception as e:
-                print(f"Error loading plugin {module_name}: {e}")
+                print(i18n.get_message("errors", "plugin_error", plugin_name=module_name, error=e))
         return plugins

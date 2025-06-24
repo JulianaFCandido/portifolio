@@ -1,3 +1,7 @@
+black
 click
-PyYAML
+flake8
+jinja2
+pylint
+pyyaml
 setuptools
