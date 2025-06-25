@@ -1,12 +1,18 @@
 [tool.black]
+# Increased line length for better flexibility
 line-length = 120
-target-version = ['py38']
+# Specifies Python version 3.13
+target-version = ['py313']
 include = '\.pyi?$'
 exclude = '''
 /(
     \.git
+  | \.hg
   | \.mypy_cache
+  | \.tox
   | \.venv
+  | _build
+  | buck-out
   | build
   | dist
 )/

@@ -1,22 +1,52 @@
-[MASTER]
-ignore=.venv,venv,.git,.tox,.mypy_cache,__pycache__
-persistent=yes
-load-plugins=
-
 [MESSAGES CONTROL]
+# Disable the following messages:
+#   C0115: Class docstrings
+#   R0903: Too few public methods
+#   W0703: Catching too general exception Exception (adjust to a more specific exception)
+#   W0511: TODO: comment
+#   C0301: Line too long (handled by Black)
+#   W0107: Unnecessary pass statement
 disable=
-    C0114,  # Missing module docstring
-    C0115,  # Missing class docstring
-    C0116,  # Missing function docstring
-    W0611,  # Unused import
-    W0612,  # Unused variable
-    W0511,  # TODO/FIXME
-    invalid-name
-
-[REPORTS]
-output-format=text
-score=yes
+    C0115,
+    R0903,
+    W0703,
+    W0511,
+    C0301,
+    W0107
 
 [FORMAT]
-max-line-length=120
-indent-string='  '
+# Matches Black's line length
+max-line-length = 120
+ignore-long-lines = yes
+indent-string='    '
+
+[BASIC]
+good-names=
+    i,
+    j,
+    k,
+    ex,
+    Run,
+    _,
+    __,
+    ___
+
+[SIMILARITIES]
+min-similarity-lines=6
+ignore-comments=yes
+ignore-imports=yes
+ignore-docstrings=yes
+
+[MISCELLANEOUS]
+notes=FIXME,XXX,TODO
+
+[VARIABLES]
+init-import=no
+
+[TYPECHECK]
+signature-mutators=click.decorators.option,
+                   click.decorators.argument,
+                   click.decorators.version_option,
+                   click.decorators.help_option,
+                   click.decorators.pass_context,
+                   click.decorators.confirmation_option
