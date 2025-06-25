@@ -5,16 +5,17 @@ setup(
     version="0.1.0",
     packages=find_packages(include=["src", "src.*"]),
     install_requires=[
-        "black",
         "click",
-        "flake8",
-        "jinja2",
-        "pylint",
         "pyyaml",
+        "jinja2",
     ],
-    setup_requires=[
-        "setuptools",
-    ],
+    extras_require={
+        "dev": [
+            "black",
+            "flake8",
+            "pylint",
+        ],
+    },
     entry_points={
         "console_scripts": [
             "workflow-gen=src.core:cli",
