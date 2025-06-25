@@ -1,3 +1,13 @@
+"""
+Main module of workflow-gen for automating the creation of GitHub Actions workflows.
+
+Responsible for:
+- Detecting the programming language of the project.
+- Loading plugins to support different languages.
+- Generating the YAML workflow file based on the detected language and project dependencies.
+"""
+
+
 import os
 from typing import Optional, Dict
 
@@ -94,7 +104,7 @@ def cli(project: str, language: str, frontend: str, test: str, linter: str, outp
         os.makedirs(output_dir, exist_ok=True)
         output_file = os.path.join(output_dir, "main.yml")
 
-        with open(output_file, "w") as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             f.write(workflow_content)
 
         click.echo(i18n.get_message("messages", "workflow_generated", output_file=output_file))

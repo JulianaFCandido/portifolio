@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up {{ language }}
+        uses: actions/setup-{{ language }}@v3
+        with:
+          {{ language }}-version: '{{ version }}'
+      {% if linter %}
+      - name: Run {{ linter }}
+        run: {{ linter }} . --max-line-length=120
+      {% endif %}
+      {% if test %}
+      - name: Run tests
+        run: {{ test }}
+      {% endif %}

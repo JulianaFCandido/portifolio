@@ -1,6 +1,12 @@
+"""
+Plugin for detecting Python projects and generating GitHub Actions workflows.
+"""
+
 import os
-from src.plugins import CIPluginInterface
 from typing import Optional
+
+from src.plugins import CIPluginInterface
+from src.utils import template
 
 
 class PythonPlugin(CIPluginInterface):
@@ -20,7 +26,7 @@ class PythonPlugin(CIPluginInterface):
         """
         dependencies = {"test": None, "linter": None}
         if os.path.exists(os.path.join(project_path, "requirements.txt")):
-            with open(os.path.join(project_path, "requirements.txt"), "r") as f:
+            with open(os.path.join(project_path, "requirements.txt"), "r", encoding="utf-8") as f:
                 for line in f:
                     if "pytest" in line:
                         dependencies["test"] = "pytest"
@@ -34,35 +40,11 @@ class PythonPlugin(CIPluginInterface):
         """
         Generates the content of the .github/workflows/main.yml file for Python.
         """
-        workflow_content = f"""
-name: CI
+        context = {
+            "language": language,
+            "version": "3.9",
+            "test": test,
+            "linter": linter,
+        }
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v3
-        with:
-          python-version: "3.9"
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install flake8 pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Lint with flake8
-        run: |
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Test with pytest
-        run: |
-          pytest
-"""
-        return workflow_content
+        return template.render("ci_template.yml.j2", context)

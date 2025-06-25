@@ -1,3 +1,7 @@
+"""
+Defines custom exception classes for handling specific errors.
+"""
+
 class PluginError(Exception):
     """
     Base class for plugin-related exceptions.

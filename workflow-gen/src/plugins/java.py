@@ -1,6 +1,12 @@
+"""
+Plugin for detecting Java projects and generating GitHub Actions workflows.
+"""
+
 import os
-from src.plugins import CIPluginInterface
 from typing import Optional
+
+from src.plugins import CIPluginInterface
+from src.utils import template
 
 
 class JavaPlugin(CIPluginInterface):
@@ -25,30 +31,11 @@ class JavaPlugin(CIPluginInterface):
         """
         Generates the content of the .github/workflows/main.yml file for Java.
         """
-        workflow_content = f"""
-name: CI
+        context = {
+            "language": language,
+            "version": "3.9",
+            "test": test,
+            "linter": linter,
+        }
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: build
-"""
-        return workflow_content
+        return template.render("ci_template.yml.j2", context)

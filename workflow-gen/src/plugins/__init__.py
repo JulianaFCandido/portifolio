@@ -1,3 +1,7 @@
+"""
+Defines the interface for CI plugins and provides a class for loading plugins.
+"""
+
 import inspect
 import importlib
 from pathlib import Path

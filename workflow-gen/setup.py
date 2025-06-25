@@ -1,3 +1,11 @@
+"""
+Package setup for workflow-gen.
+
+This file configures how the package is built, its dependencies,
+and how it is installed.  It uses setuptools to define the package
+metadata and entry points.
+"""
+
 from setuptools import setup, find_packages
 
 setup(

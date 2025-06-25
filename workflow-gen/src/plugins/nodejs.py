@@ -1,9 +1,13 @@
+"""
+Plugin for detecting Node.js projects and generating GitHub Actions workflows.
+"""
+
 import os
-from src.plugins import CIPluginInterface
 from typing import Optional
 import json
 
-from src.utils import i18n
+from src.plugins import CIPluginInterface
+from src.utils import i18n, template
 
 
 class NodejsPlugin(CIPluginInterface):
@@ -22,7 +26,7 @@ class NodejsPlugin(CIPluginInterface):
         dependencies = {"test": None, "linter": None}
         package_json_path = os.path.join(project_path, "package.json")
         if os.path.exists(package_json_path):
-            with open(package_json_path, "r") as f:
+            with open(package_json_path, "r", encoding="utf-8") as f:
                 try:
                     package_json = json.load(f)
                     dev_dependencies = package_json.get("devDependencies", {})
@@ -38,29 +42,11 @@ class NodejsPlugin(CIPluginInterface):
         """
         Generates the content of the .github/workflows/main.yml file for Node.js.
         """
-        workflow_content = f"""
-name: CI
+        context = {
+            "language": language,
+            "version": "3.9",
+            "test": test,
+            "linter": linter,
+        }
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-      - name: Install dependencies
-        run: npm install
-      - name: Run linters
-        run: npm run lint
-      - name: Run tests
-        run: npm run test
-"""
-        return workflow_content
+        return template.render("ci_template.yml.j2", context)
